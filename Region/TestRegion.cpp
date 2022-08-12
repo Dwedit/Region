@@ -87,7 +87,7 @@ int main()
 	assert(rects[0] == rectA && rects[1] == rectD);
 	bytes = AD.GetRegionData();
 	assert(bytes.size() == sizeof(RGNDATAHEADER) + sizeof(RECT) * 2);
-	assert(RegionDataHeaderOkay(bytes, rects.size(), AD.GetBoundingBox()));
+	assert(RegionDataHeaderOkay(bytes, (int)rects.size(), AD.GetBoundingBox()));
 
 	//simple region
 	rects = A.GetRegionRects();
@@ -95,14 +95,14 @@ int main()
 	assert(rects[0] == rectA);
 	bytes = A.GetRegionData();
 	assert(bytes.size() == sizeof(RGNDATAHEADER) + sizeof(RECT));
-	assert(RegionDataHeaderOkay(bytes, rects.size(), A.GetBoundingBox()));
+	assert(RegionDataHeaderOkay(bytes, (int)rects.size(), A.GetBoundingBox()));
 
 	//empty region
 	rects = empty1.GetRegionRects();
 	assert(rects.size() == 0);
 	bytes = empty1.GetRegionData();
 	assert(bytes.size() == sizeof(RGNDATAHEADER));
-	assert(RegionDataHeaderOkay(bytes, rects.size(), empty1.GetBoundingBox()));
+	assert(RegionDataHeaderOkay(bytes, (int)rects.size(), empty1.GetBoundingBox()));
 
 
 	

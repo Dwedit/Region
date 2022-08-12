@@ -213,18 +213,6 @@ void Region::UnionRectWithRect(const RECT& other)
 {
 	//only called when we know that this region is currently a rectangle
 	const RECT& me = this->boundingBox;
-	//if (RectUnionIsSimple(me, other))
-	//{
-	//	//If the union of the two rectangles is simple (not a complex region), use the min of top/left and the max of bottom/right as the new bounds
-	//	UnionBoundingBox(other);
-	//	//Becoming a rectangle
-	//	SetHrgnInvalid();
-	//}
-	//else
-	//{
-	//	//Becoming a complex region
-	//	UnionRectWithRectBecomeComplex(other);
-	//}
 
 	//Do we cover up the other?
 	if (RectCoversUpOther(me, other))
@@ -314,50 +302,10 @@ void Region::UnionWith(const RECT* pRect)
 {
 	return !(rect1.right <= rect2.left || rect2.right <= rect1.left || rect1.bottom <= rect2.top || rect2.bottom <= rect1.top);
 }
-///*static*/ bool Region::RectOverlapsOrEdgeTouches(const RECT& rect1, const RECT& rect2)
-//{
-//	return !(rect1.right <= rect2.left || rect2.right <= rect1.left || rect1.bottom <= rect2.top || rect2.bottom <= rect1.top);
-//}
-///*static*/ bool Region::RectsAreAlignedHorizontallyOrVertically(const RECT& rect1, const RECT& rect2)
-//{
-//	return (rect1.left == rect2.left && rect1.right == rect2.right) || (rect1.top == rect2.top && rect1.bottom == rect2.bottom);
-//}
 /*static*/ bool Region::RectEquals(const RECT& rect1, const RECT& rect2)
 {
 	return rect1.left == rect2.left && rect1.top == rect2.top && rect1.right == rect2.right && rect1.bottom == rect2.bottom;
 }
-///*static*/ bool Region::RectUnionIsSimple(const RECT& rect1, const RECT& rect2)
-//{
-//	if (RectCoversUpOther(rect1, rect2) || RectCoversUpOther(rect2, rect1))
-//	{
-//		return true;
-//	}
-//	//Check if we are aligned vertically and overlapping
-//	if (rect1.top == rect2.top && rect1.bottom == rect2.bottom)
-//	{
-//		if (rect1.left > rect2.right || rect2.left > rect1.right)
-//		{
-//			//reject
-//		}
-//		else
-//		{
-//			return true;
-//		}
-//	}
-//	//check if we are aligned horizontally and overlapping
-//	else if (rect1.left == rect2.left && rect1.right == rect2.right)
-//	{
-//		if (rect1.top > rect2.bottom || rect2.top > rect1.bottom)
-//		{
-//			//reject
-//		}
-//		else
-//		{
-//			return true;
-//		}
-//	}
-//	return false;
-//}
 
 void Region::BecomeRegion(const Region& region)
 {
@@ -477,10 +425,9 @@ void Region::IntersectWith(const Region& otherRegion)
 			Clear();
 			return;
 		}
-		IntersectWith(otherRegion.hrgn);
-		//GetHrgn();
-		//this->regionType = CombineRgn(hrgn, hrgn, otherRegion.hrgn, RGN_AND);
-		//this->regionType = GetRgnBox(hrgn, &boundingBox);
+		GetHrgn();
+		this->regionType = CombineRgn(hrgn, hrgn, otherRegion.hrgn, RGN_AND);
+		this->regionType = GetRgnBox(hrgn, &boundingBox);
 	}
 	else if (otherRegion.regionType == NULLREGION)
 	{
@@ -611,9 +558,6 @@ Region Region::Union(const RECT& other)
 Region Region::Union(const RECT* pOtherRect)
 {
 	return Union(*pOtherRect);
-	//Region newRegion(pOtherRect);
-	//newRegion.UnionWith(*this);
-	//return newRegion;
 }
 Region Region::Union(const Region& otherRegion)
 {

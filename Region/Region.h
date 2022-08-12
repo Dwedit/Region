@@ -27,7 +27,7 @@ typedef unsigned char byte;
 #endif
 #endif
 
-#ifndef CPP11_OR_HIGHER 1
+#ifndef CPP11_OR_HIGHER
 #define NO_RVALUE_REFERENCE 1
 #endif
 #endif
@@ -105,14 +105,8 @@ private:
 	//True if any part of rect1 overlaps any part of rect2 (adjacent is not overlapping)
 	//Only used for Intersection with rectangle
 	static bool RectOverlaps(const RECT& rect1, const RECT& rect2);
-	//static bool RectOverlapsOrEdgeTouches(const RECT& rect1, const RECT& rect2);
-	//static bool RectsAreAlignedHorizontallyOrVertically(const RECT& rect1, const RECT& rect2);
-	
 	//True if the two rectangles are equal
 	static bool RectEquals(const RECT& rect1, const RECT& rect2);
-	////True if the union of two rectangles would be a single rectangle
-	//static bool RectUnionIsSimple(const RECT& rect1, const RECT& rect2);
-	
 	//Unions (adds another rectangle to) this Region object.
 	//Only call this when this Region is guaranteed to be a rectangle region.
 	void UnionRectWithRect(const RECT& other);
