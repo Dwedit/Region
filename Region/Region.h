@@ -8,8 +8,28 @@ struct IUnknown;
 using std::vector;
 typedef unsigned char byte;
 
-#if defined(_MSC_VER) && _MSC_VER < 1600
-#define CPP98 1
+//Detect if the C++ compiler supports rvalue references
+#ifndef NO_RVALUE_REFERENCE
+#ifndef CPP11_OR_HIGHER
+//For GCC, CLANG, look for C++11 standard
+#if __cplusplus >= 201103L
+#define CPP11_OR_HIGHER 1
+#else
+//For older versions of GCC, there is also experimental C++0x
+#if defined(__GXX_EXPERIMENTAL_CXX0X__)
+#define CPP11_OR_HIGHER 1
+#else
+//For MSVC (version 2010 or higher)
+#if defined(_MSC_VER) && _MSC_VER >= 1600
+#define CPP11_OR_HIGHER 1
+#endif
+#endif
+#endif
+#endif
+
+#ifndef CPP11_OR_HIGHER 1
+#define NO_RVALUE_REFERENCE 1
+#endif
 #endif
 
 
@@ -205,7 +225,7 @@ public:
 	bool operator==(const Region& other) const;
 	//Checks if two Regions are not equal
 	bool operator!=(const Region& other) const;
-#if !CPP98
+#if !_NO_RVALUE_REFERENCE
 	//rvalue constructor, swaps with the other region
 	Region(Region&& other) noexcept;
 	//rvalue assignment, swaps with the other region

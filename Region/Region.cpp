@@ -582,7 +582,7 @@ Region::Region(HRGN *pRegion)
 }
 
 
-#if !CPP98
+#if !_NO_RVALUE_REFERENCE
 Region::Region(Region&& other) noexcept
 {
 	Region_Initialize();
